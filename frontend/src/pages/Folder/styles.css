@@ -1,0 +1,23 @@
+.folder__container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.folder__container h1 {}
+
+.folder__container li {
+  list-style: none;
+
+  display: flex;
+  flex-direction: ;
+}
+
+.folder__container li .file__info {}
+
+.box__upload {
+  background: #ddd;
+  padding: 50px;
+  border: 1px dashed red;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -9,6 +9,7 @@ const FileController = require('./controllers/FileController')
 
 routes.post('/folder', FolderController.store)
 routes.get('/folder/:id', FolderController.show)
+routes.get('/folders', FolderController.index)
 
 routes.post('/folder/:id/files',
   multer(multerConfig).single('file'),

@@ -3,8 +3,14 @@ const Folder = require('../models/Folder')
 class FolderController {
   async store(req, res) {
     const folder = await Folder.create(req.body)
+    req.io.sockets.emit('folder', folder)
 
     return res.json(folder)
+  }
+
+  async index(req, res) {
+    const folders = await Folder.find()
+    res.json(folders)
   }
 
   async show(req, res) {

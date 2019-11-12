@@ -12,7 +12,8 @@ import './styles.css'
 class Folder extends Component {
 
   state = {
-    folder: {}
+    folder: {},
+    newFiles: null
   }
 
   async componentDidMount() {
@@ -33,7 +34,8 @@ class Folder extends Component {
     io.on('file', data => {
       this.setState({ 
         folder: { ...this.state.folder, 
-        files: [ data, ...this.state.folder.files ] } })
+        files: [ data, ...this.state.folder.files ] },
+        newFiles: true })
     })
   }
 
@@ -47,12 +49,26 @@ class Folder extends Component {
     });
   }
 
+  closeMessage = () => {
+    this.setState({ newFiles: false })
+  }
+
   render() {
     const { title, files } = this.state.folder
+    const { newFiles } = this.state
 
     return (
       <div className="folder__container">
         <h1>{ title }</h1>
+
+        {newFiles && 
+          <div className="overlay">
+            <div className="message__container">
+              <p className="message">there's something new in this folder</p>
+              <button onClick={ this.closeMessage }>ok</button>
+            </div>
+          </div>
+        }
 
         <Dropzone onDropAccepted={this.handleUpload}>
           {({ getRootProps, getInputProps }) => (
@@ -70,7 +86,7 @@ class Folder extends Component {
                 <li key={file._id}>
                   <a className="file__info" href={file.url} target="_blank"
                     rel="noopener noreferrer">
-                    <MdInsertDriveFile size={24} color={'#e30513'} />
+                    <MdInsertDriveFile size={40} />
                     <strong>{ file.title }</strong>
                   </a>
 

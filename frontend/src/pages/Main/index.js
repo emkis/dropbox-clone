@@ -13,13 +13,11 @@ class Main extends Component {
   handleSubmit = async (e) => {
     e.preventDefault()
     
-    const response = await api.post('/folder', {
+    await api.post('/folder', {
       title: this.state.newFolder,
     })
-
-    const { _id } = response.data
     
-    this.props.history.push(`/folder/${_id}`)
+    this.props.history.push(`/folders`)
   }
 
   handleInputChange = (e) => {
@@ -30,11 +28,11 @@ class Main extends Component {
     return (
       <div className="main__container">
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="folderName">whats the folder name?</label>
+          <h1>whats the folder name?</h1>
           <input 
             type="text" 
             name="folderName"
-            placeholder="type a cool nome" 
+            placeholder="type a cool name" 
             onChange={this.handleInputChange}
             value={this.state.newFolder}
           />

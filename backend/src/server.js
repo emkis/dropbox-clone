@@ -5,7 +5,7 @@ const cors = require('cors')
 
 const app = express()
 
-app.use(cors());
+app.use(cors())
 
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
@@ -20,9 +20,12 @@ mongoose.connect(
   'mongodb://localhost:27017/dropbox',
   {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false,
   },
 )
+
+mongoose.set('debug', true);
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

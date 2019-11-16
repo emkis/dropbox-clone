@@ -24,7 +24,7 @@ class FileController {
 
       const file = await File.findOneAndUpdate({ _id }, {
         path: req.file.key,
-      })
+      }, { new: true })
 
       // remove o arquivo antigo
       const oldFilePath = resolve(__dirname, '..', '..', 'uploads', path)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { MdFolder } from "react-icons/md"
+import { MdFolder, MdArrowDownward } from "react-icons/md"
 import socket from 'socket.io-client'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 import api from '../../services/api'
 
@@ -37,13 +37,36 @@ class Folders extends Component {
     this.setState({ newFolder: false })
   }
 
+  handleDownload = async () => {
+    const response = await api.get('/download', {
+      responseType: 'blob',
+      timeout: 30000,
+    })
+
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'AllFiles.zip')
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+
+    console.log(link)
+    
+  }
+
   render() {
     const { folders, newFolder } = this.state
 
     return (
       <div className="folder__container">
 
-        <h1>all folders below ↓</h1>
+        <header>
+          <h1>all folders below</h1>
+          <button className="download" onClick={this.handleDownload}>
+            <MdArrowDownward size={45} />
+          </button>
+        </header>
 
         {newFolder && 
           <div className="overlay">

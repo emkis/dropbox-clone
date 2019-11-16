@@ -20,9 +20,14 @@ body {
   box-sizing: border-box;
 }
 
+button {
+  transition: transform ease 100ms;
+}
+
 button:hover,
 button:focus {
   transform: scale(1.05);
+  cursor: pointer;
 }
 
 .overlay {

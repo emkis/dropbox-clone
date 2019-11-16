@@ -6,25 +6,25 @@
   height: 100vh;
 }
 
-form {
+.main__box {
   display: flex;
   justify-content: center;
   align-items: stretch;
   flex-direction: column;
   padding: 7rem 5rem;
-  border: 2px solid #5f6368;
+  border: 2px solid #ddd;
   border-radius: 8px;
   max-width: 45rem;
 }
 
-form h1 {
+.main__box h1 {
   font-family: 'Lato', sans-serif;
   font-size: 4rem;
   font-weight: 700;
   margin-bottom: 2.5rem;
 }
 
-form input {
+.main__box input {
   border: 1px solid #333;
   padding: 1.5rem 2rem;
   font-size: 1.8rem;
@@ -34,7 +34,7 @@ form input {
   outline: none;
 }
 
-form button {
+.main__box button {
   border: 0;
   padding: 1.5rem 2.5rem;
   font-size: 1.8rem;
@@ -43,4 +43,10 @@ form button {
   border-radius: 8px;
   color: #fff;
   cursor: pointer;
+}
+
+.main__box button.no {
+  color: black;
+  background: #ddd;
+  margin-bottom: 1rem;
 }

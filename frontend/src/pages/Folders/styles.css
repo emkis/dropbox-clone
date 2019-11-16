@@ -1,5 +1,16 @@
-.folder__container>h1 {
+.folder__container header {
   margin-bottom: 2rem;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .download {
+  border: 0;
+  background: none;
 }
 
 .folders {

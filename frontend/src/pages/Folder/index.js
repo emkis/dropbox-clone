@@ -37,6 +37,21 @@ class Folder extends Component {
         files: [ data, ...this.state.folder.files ] },
         newFiles: true })
     })
+
+    io.on('fileChanged', data => {
+      const modifiedFile = this.state.folder.files.map(file => {
+        if(file.id === data.id) {
+          file.url = data.url
+          return file
+        }
+        return file
+      })
+
+      this.setState({ 
+        folder: { ...this.state.folder, 
+        files: [ ...modifiedFile ] } 
+      })
+    })
   }
 
   handleUpload = (files) => {
@@ -60,7 +75,7 @@ class Folder extends Component {
     return (
       <div className="folder__container">
         <h1>{ title }</h1>
-
+        
         {newFiles && 
           <div className="overlay">
             <div className="message__container">

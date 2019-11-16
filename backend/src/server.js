@@ -17,7 +17,7 @@ io.on('connection', (socket) => {
 })
 
 mongoose.connect(
-  'mongodb://localhost:27017/dropbox',
+  'mongodb+srv://dropbox:dropbox@cluster0-hoetb.mongodb.net/dropbox?retryWrites=true&w=majority',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

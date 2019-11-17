@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { MdInsertDriveFile } from "react-icons/md"
+import { FaCircleNotch } from 'react-icons/fa'
 import { formatDistance, parseISO } from 'date-fns'
 import pt from 'date-fns/locale/pt'
 import Dropzone from 'react-dropzone'
@@ -15,7 +16,8 @@ class Folder extends Component {
     folder: { },
     studentChanged: null,
     changeInfo: { },
-    imTeacher: null
+    imTeacher: null,
+    loading: true,
   }
 
   async componentDidMount() {
@@ -30,7 +32,10 @@ class Folder extends Component {
     const folderId = this.props.match.params.id
     const response = await api.get(`/folder/${folderId}`)
 
-    this.setState({ folder: response.data })
+    this.setState({ 
+      folder: response.data,
+      loading: false
+    })
   }
 
   subscribeToNewFiles = () => {
@@ -120,7 +125,15 @@ class Folder extends Component {
 
   render() {
     const { title, files } = this.state.folder
-    const { studentChanged, changeInfo } = this.state
+    const { studentChanged, changeInfo, loading } = this.state
+
+    if (loading) {
+      return (
+        <div className="loading">
+          <FaCircleNotch />
+        </div>
+      )
+    }
 
     return (
       <div className="folder__container">

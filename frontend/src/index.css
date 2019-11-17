@@ -72,3 +72,28 @@ button:focus {
   color: #fff;
   cursor: pointer;
 }
+
+.loading {
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: #000;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.loading svg {
+  animation: routate 2s linear infinite;
+}
+
+@keyframes routate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

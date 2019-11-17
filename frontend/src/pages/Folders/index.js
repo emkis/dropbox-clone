@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { MdFolder, MdArrowDownward } from "react-icons/md"
+import { FaCircleNotch } from 'react-icons/fa'
 import socket from 'socket.io-client'
 import { Link } from 'react-router-dom'
 
@@ -14,6 +15,7 @@ class Folders extends Component {
     studentChanged: null,
     changeInfo: { },
     imTeacher: null,
+    loading: true,
   }
 
   async componentDidMount() {
@@ -28,7 +30,10 @@ class Folders extends Component {
     const response = await api.get(`/folders`)
     const data = await response.data
     
-    this.setState({ folders: data })
+    this.setState({ 
+      folders: data,
+      loading: false
+    })
   }
 
   subscribeToNewFolders = () => {
@@ -78,7 +83,15 @@ class Folders extends Component {
   }
 
   render() {
-    const { folders, studentChanged, changeInfo, imTeacher } = this.state
+    const { folders, studentChanged, changeInfo, imTeacher, loading } = this.state
+
+    if (loading) {
+      return (
+        <div className="loading">
+          <FaCircleNotch />
+        </div>
+      )
+    }
 
     if (imTeacher) {
       this.handleStyleTeacher()

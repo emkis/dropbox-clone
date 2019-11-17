@@ -30,6 +30,13 @@ class FileController {
       const oldFilePath = resolve(__dirname, '..', '..', 'uploads', path)
       fs.unlinkSync(oldFilePath);
 
+      // se aluno que fez upload, passa esse parametro pra todo mundo
+      if (req.query.student) {
+        req.io.sockets.in(folder._id).emit('fileChanged', file, { student: true })
+        return res.json(file)
+      }
+
+      // se nao foi o professor então só atualiza o de todo mundo
       req.io.sockets.in(folder._id).emit('fileChanged', file)
       return res.json(file)
     }
@@ -41,6 +48,12 @@ class FileController {
 
     folder.files.push(file)
     await folder.save()
+
+    if (req.query.student) {
+      req.io.sockets.in(folder._id).emit('file', file, { student: true })
+
+      return res.json(file)
+    }
 
     req.io.sockets.in(folder._id).emit('file', file)
 

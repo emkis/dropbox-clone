@@ -10,11 +10,19 @@ import './styles.css'
 class Folders extends Component {
 
   state = {
-    folders: [],
-    newFolder: null
+    folders: [ ],
+    studentChanged: null,
+    changeInfo: { },
+    imTeacher: null,
   }
 
   async componentDidMount() {
+    const isTeacher = new URLSearchParams(this.props.location.search).get('teacher')
+    
+    if (isTeacher) {
+      this.setState({ imTeacher: true })
+    }
+
     this.subscribeToNewFolders()
 
     const response = await api.get(`/folders`)
@@ -31,10 +39,23 @@ class Folders extends Component {
         folders: [ data, ...this.state.folders ]
       })
     })
+
+    io.on('iSaidToNotChange', data => {
+      if (this.state.imTeacher) {
+
+        this.setState({ 
+          studentChanged: true,
+          changeInfo: { 
+            fileName: data.fileName, 
+            folderName: data.folderName,
+          }
+        })
+      }
+    })
   }
 
   closeMessage = () => {
-    this.setState({ newFolder: false })
+    this.setState({ studentChanged: false })
   }
 
   handleDownload = async () => {
@@ -50,13 +71,18 @@ class Folders extends Component {
     document.body.appendChild(link)
     link.click()
     link.remove()
+  }
 
-    console.log(link)
-    
+  handleStyleTeacher = () => {
+    document.getElementById('root').style = 'color: #5a71ff'
   }
 
   render() {
-    const { folders, newFolder } = this.state
+    const { folders, studentChanged, changeInfo, imTeacher } = this.state
+
+    if (imTeacher) {
+      this.handleStyleTeacher()
+    }
 
     return (
       <div className="folder__container">
@@ -68,10 +94,17 @@ class Folders extends Component {
           </button>
         </header>
 
-        {newFolder && 
+        { studentChanged && 
           <div className="overlay">
             <div className="message__container">
-              <p className="message">there's a new folder here</p>
+              <p className="title">some student change a file here</p>
+              
+              <p className="message">
+                folder name » { changeInfo.folderName }
+                <br/>
+                file name » { changeInfo.fileName }
+              </p>
+              
               <button onClick={ this.closeMessage }>ok</button>
             </div>
           </div>
@@ -82,9 +115,22 @@ class Folders extends Component {
               (folders.map(folder => (
                   <li key={ folder.title }>
                     <MdFolder size={40} />
-                    <Link className="file__info" to={`/folder/${folder._id}/files`}>
-                      { folder.title }
-                    </Link>
+                    
+                    { imTeacher ? (
+                        <Link className="file__info" to={{ 
+                        pathname:`/folder/${folder._id}/files`,
+                        search: '?teacher=true' 
+                        }}>
+                          { folder.title }
+                        </Link>) 
+                      : 
+                        (
+                        <Link className="file__info"
+                        to={`/folder/${folder._id}/files`}>
+                          { folder.title }
+                        </Link>)
+                    }
+                    
                   </li>
               )))
               : (<h2>there's no folders here</h2>) 

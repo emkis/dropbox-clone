@@ -6,7 +6,13 @@
   height: 100vh;
 }
 
-.main__box {
+.main__container h1 {
+  color: #5a71ff;
+}
+
+.main__box,
+.message__container {
+  background: #fff;
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -45,7 +51,8 @@
   cursor: pointer;
 }
 
-.main__box button.no {
+.main__box .gray,
+.message__container .gray {
   color: black;
   background: #ddd;
   margin-bottom: 1rem;

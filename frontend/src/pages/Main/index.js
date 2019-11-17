@@ -29,7 +29,7 @@ class Main extends Component {
     this.setState({ iWantNewFolder: true })
   }
 
-  goToFolders = () => { this.props.history.push(`/folders`) }
+  goToFolders = () => { this.props.history.push(`/folders/?teacher=true`) }
 
   render() {
 
@@ -41,7 +41,7 @@ class Main extends Component {
         { !iWantNewFolder && 
           <div className="main__box">
             <h1>hi teacher, do you need a new folder?</h1>
-            <button type='button' className="no" onClick={ this.goToFolders }>no</button>
+            <button type='button' className="gray" onClick={ this.goToFolders }>no</button>
             <button type='button' onClick={ this.handleWantNewFolder }>yes</button>
           </div>
         }

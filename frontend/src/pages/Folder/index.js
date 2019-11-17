@@ -12,11 +12,19 @@ import './styles.css'
 class Folder extends Component {
 
   state = {
-    folder: {},
-    newFiles: null
+    folder: { },
+    studentChanged: null,
+    changeInfo: { },
+    imTeacher: null
   }
 
   async componentDidMount() {
+    const isTeacher = new URLSearchParams(this.props.location.search).get('teacher')
+    
+    if (isTeacher) {
+      this.setState({ imTeacher: true })
+    }
+
     this.subscribeToNewFiles()
 
     const folderId = this.props.match.params.id
@@ -31,14 +39,26 @@ class Folder extends Component {
 
     io.emit('connectionRoom', folderId)
 
-    io.on('file', data => {
+    io.on('file', (data, student) => {
+      
+      // um aluno alterou algo »» mostra o aviso pro professor
+      if (student && this.state.imTeacher) {
+        this.setState({ 
+          folder: { ...this.state.folder, 
+          files: [ data, ...this.state.folder.files ] },
+          studentChanged: true
+        })
+        return
+      }
+
+      // eu que fiz alteração nao avisa pra mim
       this.setState({ 
         folder: { ...this.state.folder, 
-        files: [ data, ...this.state.folder.files ] },
-        newFiles: true })
+        files: [ data, ...this.state.folder.files ] }
+      })
     })
 
-    io.on('fileChanged', data => {
+    io.on('fileChanged', (data, student) => {
       const modifiedFile = this.state.folder.files.map(file => {
         if(file.id === data.id) {
           file.url = data.url
@@ -47,39 +67,75 @@ class Folder extends Component {
         return file
       })
 
+      if (student && this.state.imTeacher) {
+        this.setState({ 
+          folder: { ...this.state.folder, 
+          files: [ ...modifiedFile ] },
+          studentChanged: true 
+        })
+        return
+      }
+
       this.setState({ 
         folder: { ...this.state.folder, 
         files: [ ...modifiedFile ] } 
       })
     })
+
+    io.on('iSaidToNotChange', data => {
+      if (this.state.imTeacher) {
+
+        this.setState({ 
+          studentChanged: true,
+          changeInfo: { 
+            fileName: data.fileName, 
+            folderName: data.folderName,
+          }
+        })
+      }
+    })
+
   }
 
   handleUpload = (files) => {
     files.forEach(file => {
       const data = new FormData()
       const folderId = this.props.match.params.id
-
+      
       data.append('file', file)
+
+      // aluno fez o upload, passa esse parametro pro server
+      if (!this.state.imTeacher) {
+        api.post(`/folder/${folderId}/files?student=true`, data)
+        return
+      }
+
       api.post(`/folder/${folderId}/files`, data)
     });
   }
 
   closeMessage = () => {
-    this.setState({ newFiles: false })
+    this.setState({ studentChanged: false })
   }
 
   render() {
     const { title, files } = this.state.folder
-    const { newFiles } = this.state
+    const { studentChanged, changeInfo } = this.state
 
     return (
       <div className="folder__container">
         <h1>{ title }</h1>
         
-        {newFiles && 
+        { studentChanged && 
           <div className="overlay">
             <div className="message__container">
-              <p className="message">there's something new in this folder</p>
+            <p className="title">some student change a file here</p>
+              
+              <p className="message">
+                folder name » { changeInfo.folderName }
+                <br/>
+                file name » { changeInfo.fileName }
+              </p>
               <button onClick={ this.closeMessage }>ok</button>
             </div>
           </div>
@@ -106,14 +162,14 @@ class Folder extends Component {
                   </a>
 
                   <span>
-                    { formatDistance(parseISO(file.createdAt), new Date(), {
+                    { formatDistance(parseISO(file.updatedAt), new Date(), {
                         locale: pt, 
                         addSuffix: true
                     })}
                   </span>
                 </li>
               )) 
-              : ( <h2>this folder is empty</h2> ) 
+              : ( <h1>this folder is empty</h1> ) 
           }
         </ul>
       </div>

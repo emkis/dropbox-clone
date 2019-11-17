@@ -33,6 +33,13 @@ class FileController {
       // se aluno que fez upload, passa esse parametro pra todo mundo
       if (req.query.student) {
         req.io.sockets.in(folder._id).emit('fileChanged', file, { student: true })
+
+        // envia dados do arquivo que o estudante alterou
+        req.io.sockets.emit('iSaidToNotChange', {
+          fileName: file.title,
+          folderName: folder.title
+        })
+
         return res.json(file)
       }
 
@@ -51,6 +58,11 @@ class FileController {
 
     if (req.query.student) {
       req.io.sockets.in(folder._id).emit('file', file, { student: true })
+
+      req.io.sockets.emit('iSaidToNotChange', {
+        fileName: file.title,
+        folderName: folder.title
+      })
 
       return res.json(file)
     }

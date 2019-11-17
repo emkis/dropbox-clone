@@ -9,6 +9,15 @@ class Main extends Component {
   state = {
     newFolder: '',
     iWantNewFolder: null,
+    imTeacher: false,
+  }
+
+  componentDidMount() {
+    const isTeacher = new URLSearchParams(this.props.location.search).get('teacher')
+    
+    if (isTeacher) {
+      this.setState({ imTeacher: true })
+    }
   }
 
   handleSubmit = async (e) => {
@@ -29,11 +38,34 @@ class Main extends Component {
     this.setState({ iWantNewFolder: true })
   }
 
-  goToFolders = () => { this.props.history.push(`/folders/?teacher=true`) }
+  goToFolders = (teacher) => {  
+    if (teacher) {
+      this.props.history.push(`/folders/?teacher=true`)
+    } else {
+      this.props.history.push(`/folders`)
+    }
+  }
+
+  handleStyleTeacher = () => {
+    document.getElementById('root').style = 'color: #5a71ff'
+  }
 
   render() {
 
-    const { iWantNewFolder } = this.state 
+    const { iWantNewFolder, imTeacher } = this.state 
+
+    if (!imTeacher) {
+      return (
+        <div className="main__container">
+          <div className="main__box">
+            <h1>you are a student, only teachers can create folders</h1>
+            <button type='button' onClick={ () => this.goToFolders(false) }>go to folders</button>
+          </div>
+        </div>
+      )
+    }
+
+    this.handleStyleTeacher()
 
     return (
       <div className="main__container">
@@ -41,7 +73,7 @@ class Main extends Component {
         { !iWantNewFolder && 
           <div className="main__box">
             <h1>hi teacher, do you need a new folder?</h1>
-            <button type='button' className="gray" onClick={ this.goToFolders }>no</button>
+            <button type='button' className="gray" onClick={ () => this.goToFolders(true) }>no</button>
             <button type='button' onClick={ this.handleWantNewFolder }>yes</button>
           </div>
         }

@@ -129,7 +129,7 @@ class Folder extends Component {
         { studentChanged && 
           <div className="overlay">
             <div className="message__container">
-            <p className="title">some student change a file here</p>
+            <p className="title">some student change a file!</p>
               
               <p className="message">
                 folder name » { changeInfo.folderName }

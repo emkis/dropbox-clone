@@ -6,10 +6,6 @@
   height: 100vh;
 }
 
-.main__container h1 {
-  color: #5a71ff;
-}
-
 .main__box,
 .message__container {
   background: #fff;

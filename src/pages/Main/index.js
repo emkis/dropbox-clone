@@ -23,7 +23,7 @@ class Main extends Component {
   handleSubmit = async (e) => {
     e.preventDefault()
     
-    await api.post('/folder', {
+    await api.post('/folder?teacher=true', {
       title: this.state.newFolder,
     })
     

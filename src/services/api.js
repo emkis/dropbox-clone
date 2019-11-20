@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://dropbox-clone-back.herokuapp.com/',
+  baseURL: process.env.API_URL || 'http://localhost:3333',
 })
 
 export default api

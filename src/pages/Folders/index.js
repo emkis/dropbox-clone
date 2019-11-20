@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { MdFolder, MdArrowDownward } from "react-icons/md"
+import { MdFolder } from "react-icons/md"
+import { FiDownload } from "react-icons/fi"
 import { FaCircleNotch } from 'react-icons/fa'
 import socket from 'socket.io-client'
 import { Link } from 'react-router-dom'
@@ -103,7 +104,7 @@ class Folders extends Component {
         <header>
           <h1>all folders below</h1>
           <button className="download" onClick={this.handleDownload}>
-            <MdArrowDownward size={45} />
+            <FiDownload size={40} />
           </button>
         </header>
 

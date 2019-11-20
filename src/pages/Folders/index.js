@@ -41,7 +41,7 @@ class Folders extends Component {
 
     io.on('folder', data => {
       this.setState({ 
-        folders: [ data, ...this.state.folders ]
+        folders: [ ...this.state.folders, data ]
       })
     })
 

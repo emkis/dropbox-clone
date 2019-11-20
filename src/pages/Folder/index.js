@@ -185,8 +185,8 @@ class Folder extends Component {
 
                   <span>
                     { formatDistance(parseISO(file.updatedAt), new Date(), {
-                        locale: pt, 
-                        addSuffix: true
+                        addSuffix: true,
+                        includeSeconds: true
                     })}
                   </span>
                 </li>

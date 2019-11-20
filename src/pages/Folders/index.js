@@ -104,7 +104,7 @@ class Folders extends Component {
         <header>
           <h1>all folders below</h1>
           <button className="download" onClick={this.handleDownload}>
-            <FiDownload size={40} />
+            <FiDownload size={35} />
           </button>
         </header>
 

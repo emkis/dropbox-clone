@@ -37,7 +37,7 @@ class Folders extends Component {
   }
 
   subscribeToNewFolders = () => {
-    const io = socket('http://localhost:3333')
+    const io = socket(process.env.REACT_APP_API_URL || 'http://localhost:3333')
 
     io.on('folder', data => {
       this.setState({ 

@@ -40,7 +40,7 @@ class Folder extends Component {
 
   subscribeToNewFiles = () => {
     const folderId = this.props.match.params.id
-    const io = socket('http://localhost:3333')
+    const io = socket(process.env.REACT_APP_API_URL || 'http://localhost:3333')
 
     io.emit('connectionRoom', folderId)
 

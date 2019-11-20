@@ -67,6 +67,7 @@ class Folder extends Component {
       const modifiedFile = this.state.folder.files.map(file => {
         if(file.id === data.id) {
           file.url = data.url
+          file.updatedAt = data.updatedAt
           return file
         }
         return file
@@ -123,9 +124,13 @@ class Folder extends Component {
     this.setState({ studentChanged: false })
   }
 
+  handleStyleTeacher = () => {
+    document.getElementById('root').style = 'color: #5a71ff'
+  }
+
   render() {
     const { title, files } = this.state.folder
-    const { studentChanged, changeInfo, loading } = this.state
+    const { studentChanged, changeInfo, loading, imTeacher } = this.state
 
     if (loading) {
       return (
@@ -133,6 +138,10 @@ class Folder extends Component {
           <FaCircleNotch />
         </div>
       )
+    }
+
+    if (imTeacher) {
+      this.handleStyleTeacher()
     }
 
     return (

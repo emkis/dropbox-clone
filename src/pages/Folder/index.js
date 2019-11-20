@@ -183,7 +183,7 @@ class Folder extends Component {
                     <strong>{ file.title }</strong>
                   </a>
 
-                  <span>
+                  <span className="updated-at">
                     { formatDistance(parseISO(file.updatedAt), new Date(), {
                         addSuffix: true,
                         includeSeconds: true

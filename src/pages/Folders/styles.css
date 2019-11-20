@@ -21,14 +21,25 @@ header .download {
 .folder__container .folders li {
   margin: .7rem;
   min-height: 150px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   flex: 1 1 18rem;
 }
 
-.folders li a {
+.folders li .wrapper-_link {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.folders li .file__info {
   order: 2;
   text-align: center;
   margin-top: 1.5rem;
+}
+
+.folders svg {
+  color: #333;
 }

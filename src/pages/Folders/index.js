@@ -128,6 +128,8 @@ class Folders extends Component {
             {folders ? 
               (folders.map(folder => (
                   <li key={ folder.title }>
+                    <Link className="wrapper-_link" to={`/folder/${folder._id}/files`}>
+
                     <MdFolder size={40} />
                     
                     { imTeacher ? (
@@ -139,12 +141,11 @@ class Folders extends Component {
                         </Link>) 
                       : 
                         (
-                        <Link className="file__info"
-                        to={`/folder/${folder._id}/files`}>
+                        <span className="file__info">
                           { folder.title }
-                        </Link>)
+                        </span>)
                     }
-                    
+                    </Link>
                   </li>
               )))
               : (<h2>there's no folders here</h2>) 

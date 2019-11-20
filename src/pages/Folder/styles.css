@@ -47,7 +47,7 @@
   margin-right: 1rem;
 }
 
-.folder__container span {
+.folder__container .updated-at {
   color: #5f6368;
   font-size: 1.4rem;
 }

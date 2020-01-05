@@ -7,3 +7,6 @@ all data is being consumed from a node API, you can check the [repo here](https:
 - ReactJS
 - Styled components
 - Axios
+
+# note
+all data that you upload here gets deleted after 30 minutes, so dont worry 😉

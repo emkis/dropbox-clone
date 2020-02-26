@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:400,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700&display=swap");
 
 html {
   font-size: 62.5%;
@@ -7,7 +7,7 @@ html {
 body {
   font-size: 1.6rem;
   color: #333;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   min-height: 100vh;
   margin: 0 1.5rem;
 }
@@ -30,10 +30,25 @@ button {
   transition: transform ease 100ms;
 }
 
+button[disabled],
+button:disabled {
+  cursor: not-allowed !important;
+}
+
 button:hover,
 button:focus {
   transform: scale(1.05);
   cursor: pointer;
+}
+
+.btn-icon {
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.btn-icon:hover,
+.btn-icon:focus {
+  background-color: #ddd;
 }
 
 .overlay {
@@ -47,6 +62,7 @@ button:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 
 .message__container {
@@ -89,11 +105,12 @@ button:focus {
   flex: 1;
 }
 
-.loading svg {
-  animation: routate 2s linear infinite;
+.loading svg,
+.rotate {
+  animation: rotate 2s linear infinite;
 }
 
-@keyframes routate {
+@keyframes rotate {
   from {
     transform: rotate(0deg);
   }
@@ -101,4 +118,218 @@ button:focus {
   to {
     transform: rotate(360deg);
   }
+}
+
+.folder__container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 5rem 0 8rem;
+}
+
+.folder__container header h1 {
+  font-family: "Lato", sans-serif;
+  font-size: 4.3rem;
+  line-height: 1;
+}
+
+.folder__container li {
+  position: relative;
+  list-style: none;
+  display: flex;
+  padding: 1.4rem 2rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 200ms ease-out;
+  flex-wrap: wrap;
+  word-break: break-word;
+}
+
+.folder__container li:hover,
+.folder__container li:focus,
+.folder__container li:focus-within {
+  background: rgba(95, 99, 104, 0.1);
+}
+
+.file__info {
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.file__info:focus,
+.file__info:hover {
+  text-decoration: underline;
+}
+
+.file__info::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.file__info svg {
+  color: #5f6368;
+  min-width: 40px;
+  margin-right: 1rem;
+}
+
+.folder__container .updated-at {
+  color: #5f6368;
+  font-size: 1.4rem;
+}
+
+.box__upload {
+  padding: 2rem 4rem;
+  margin: 2rem 0;
+  min-height: 11rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 8px;
+  border-width: 2px;
+  border-color: #5f6368;
+  border-style: dashed;
+
+  transition: background 200ms ease-out;
+  cursor: pointer;
+}
+
+.box__upload:hover {
+  background: rgba(95, 99, 104, 0.1);
+}
+
+.box__upload strong {
+  color: #5f6368;
+}
+
+.folder__container header {
+  margin-bottom: 2rem;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header div {
+  text-align: right;
+  margin-bottom: -8px;
+}
+
+header .btn {
+  border: 0;
+  background: none;
+}
+
+header .btn + .btn {
+  margin-left: 0.5rem;
+}
+
+.folders {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.7rem;
+}
+
+.folder__container .folders li {
+  position: relative;
+  margin: 0.7rem;
+  min-height: 15rem;
+  flex: 1 1 18rem;
+}
+
+.folders li .wrapper-_link {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.folders li .wrapper-_link::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper-_link:hover .folder__container li:hover {
+  background: rgba(95, 99, 104, 0.1);
+}
+
+.folders li .file__info {
+  order: 2;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.folders svg {
+  color: #333;
+}
+
+/*  */
+
+.main__box,
+.message__container {
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-direction: column;
+  padding: 7rem 5rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  max-width: 45rem;
+}
+
+.main__box h1 {
+  font-family: "Lato", sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+}
+
+.main__box input {
+  border: 1px solid #333;
+  padding: 1.5rem 2rem;
+  font-size: 1.8rem;
+  background: rgba(95, 99, 104, 0.1);
+  border-radius: 8px;
+  margin-bottom: 1.3rem;
+  outline: none;
+  height: 5rem;
+}
+
+.main__box button {
+  border: 0;
+  padding: 1.5rem 2.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: #000;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  height: 5rem;
+}
+
+.main__box .gray,
+.message__container .gray {
+  color: black;
+  background: #ddd;
+  margin-bottom: 1rem;
 }

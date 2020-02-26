@@ -259,15 +259,18 @@ header .btn + .btn {
 
 .main__box,
 .message__container {
-  background: #fff;
+  max-width: 45rem;
+  width: 100%;
+
   display: flex;
   justify-content: center;
   align-items: stretch;
   flex-direction: column;
-  padding: 7rem 5rem;
+
+  background: #fff;
   border: 2px solid #ddd;
   border-radius: 8px;
-  max-width: 45rem;
+  padding: 6.5rem 4.5rem;
 }
 
 .main__box h1 {

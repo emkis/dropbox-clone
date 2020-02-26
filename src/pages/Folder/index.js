@@ -1,202 +1,155 @@
-import React, { Component } from 'react'
-import { MdInsertDriveFile } from "react-icons/md"
-import { FaCircleNotch } from 'react-icons/fa'
-import { formatDistance, parseISO } from 'date-fns'
-import pt from 'date-fns/locale/pt'
-import Dropzone from 'react-dropzone'
-import socket from 'socket.io-client'
+import React, { Component } from "react";
+import { formatDistance, parseISO } from "date-fns";
+import Dropzone from "react-dropzone";
+import socket from "socket.io-client";
 
-import api from '../../services/api'
+import { MdInsertDriveFile } from "react-icons/md";
+import { FiTrash2 } from "react-icons/fi";
+import { FaCircleNotch } from "react-icons/fa";
 
-import './styles.css'
+import api from "../../services/api";
 
 class Folder extends Component {
-
   state = {
-    folder: { },
-    studentChanged: null,
-    changeInfo: { },
-    imTeacher: null,
+    folder: {},
     loading: true,
-  }
+    deletingFolder: false
+  };
 
   async componentDidMount() {
-    const isTeacher = new URLSearchParams(this.props.location.search).get('teacher')
-    
-    if (isTeacher) {
-      this.setState({ imTeacher: true })
-    }
+    this.subscribeToNewFiles();
 
-    this.subscribeToNewFiles()
+    const folderId = this.props.match.params.id;
+    const response = await api.get(`/folder/${folderId}`);
 
-    const folderId = this.props.match.params.id
-    const response = await api.get(`/folder/${folderId}`)
-
-    this.setState({ 
+    this.setState({
       folder: response.data,
       loading: false
-    })
-  }
-
-  subscribeToNewFiles = () => {
-    const folderId = this.props.match.params.id
-    const io = socket(process.env.REACT_APP_API_URL || 'http://localhost:3333')
-
-    io.emit('connectionRoom', folderId)
-
-    io.on('file', (data, student) => {
-      
-      // um aluno alterou algo »» mostra o aviso pro professor
-      if (student && this.state.imTeacher) {
-        this.setState({ 
-          folder: { ...this.state.folder, 
-          files: [ data, ...this.state.folder.files ] },
-          studentChanged: true
-        })
-        return
-      }
-
-      // eu que fiz alteração nao avisa pra mim
-      this.setState({ 
-        folder: { ...this.state.folder, 
-        files: [ data, ...this.state.folder.files ] }
-      })
-    })
-
-    io.on('fileChanged', (data, student) => {
-      const modifiedFile = this.state.folder.files.map(file => {
-        if(file.id === data.id) {
-          file.url = data.url
-          file.updatedAt = data.updatedAt
-          return file
-        }
-        return file
-      })
-
-      if (student && this.state.imTeacher) {
-        this.setState({ 
-          folder: { ...this.state.folder, 
-          files: [ ...modifiedFile ] },
-          studentChanged: true 
-        })
-        return
-      }
-
-      this.setState({ 
-        folder: { ...this.state.folder, 
-        files: [ ...modifiedFile ] } 
-      })
-    })
-
-    io.on('iSaidToNotChange', data => {
-      if (this.state.imTeacher) {
-
-        this.setState({ 
-          studentChanged: true,
-          changeInfo: { 
-            fileName: data.fileName, 
-            folderName: data.folderName,
-          }
-        })
-      }
-    })
-
-  }
-
-  handleUpload = (files) => {
-    files.forEach(file => {
-      const data = new FormData()
-      const folderId = this.props.match.params.id
-      
-      data.append('file', file)
-
-      // aluno fez o upload, passa esse parametro pro server
-      if (!this.state.imTeacher) {
-        api.post(`/folder/${folderId}/files?student=true`, data)
-        return
-      }
-
-      api.post(`/folder/${folderId}/files`, data)
     });
   }
 
-  closeMessage = () => {
-    this.setState({ studentChanged: false })
-  }
+  subscribeToNewFiles = () => {
+    const folderId = this.props.match.params.id;
+    const io = socket(process.env.REACT_APP_API_URL);
 
-  handleStyleTeacher = () => {
-    document.getElementById('root').style = 'color: #5a71ff'
-  }
+    io.emit("connectionRoom", folderId);
+
+    io.on("file", data => {
+      this.setState({
+        folder: {
+          ...this.state.folder,
+          files: [data, ...this.state.folder.files]
+        }
+      });
+    });
+
+    io.on("fileChanged", data => {
+      const modifiedFile = this.state.folder.files.map(file => {
+        if (file.id === data.id) {
+          file.url = data.url;
+          file.updatedAt = data.updatedAt;
+          return file;
+        }
+        return file;
+      });
+
+      this.setState({
+        folder: { ...this.state.folder, files: [...modifiedFile] }
+      });
+    });
+  };
+
+  handleUpload = files => {
+    files.forEach(file => {
+      const data = new FormData();
+      const folderId = this.props.match.params.id;
+
+      data.append("file", file);
+      api.post(`folder/${folderId}/files`, data);
+    });
+  };
+
+  handleDeleteFolder = async id => {
+    this.setState({ deletingFolder: true });
+
+    try {
+      await api.delete(`folder/${id}`);
+      this.props.history.push("/");
+    } catch (error) {
+      this.setState({ deletingFolder: false });
+    }
+  };
 
   render() {
-    const { title, files } = this.state.folder
-    const { studentChanged, changeInfo, loading, imTeacher } = this.state
+    const { title, files } = this.state.folder;
+    const { loading, deletingFolder } = this.state;
 
     if (loading) {
       return (
         <div className="loading">
           <FaCircleNotch />
         </div>
-      )
-    }
-
-    if (imTeacher) {
-      this.handleStyleTeacher()
+      );
     }
 
     return (
       <div className="folder__container">
-        <h1>{ title }</h1>
-        
-        { studentChanged && 
-          <div className="overlay">
-            <div className="message__container">
-            <p className="title">some student change a file!</p>
-              
-              <p className="message">
-                folder name » { changeInfo.folderName }
-                <br/>
-                file name » { changeInfo.fileName }
-              </p>
-              <button onClick={ this.closeMessage }>ok</button>
-            </div>
-          </div>
-        }
+        <header>
+          <h1>{title}</h1>
+          <button
+            type="button"
+            className="btn btn-icon"
+            title="delete this folder"
+            onClick={this.handleDeleteFolder}
+            disabled={deletingFolder}
+          >
+            {deletingFolder ? (
+              <FaCircleNotch className="rotate" size={33} />
+            ) : (
+              <FiTrash2 size={35} />
+            )}
+          </button>
+        </header>
 
         <Dropzone onDropAccepted={this.handleUpload}>
           {({ getRootProps, getInputProps }) => (
             <div className="box__upload" {...getRootProps()}>
-              <input { ...getInputProps() } />
+              <input {...getInputProps()} />
               <strong>drag a file or click here</strong>
             </div>
           )}
         </Dropzone>
 
         <ul>
-          { files ? 
-              files.map(file => 
-              (
-                <li key={file._id}>
-                  <a className="file__info" href={file.url} target="_blank"
-                    rel="noopener noreferrer">
-                    <MdInsertDriveFile size={40} />
-                    <strong>{ file.title }</strong>
-                  </a>
+          {files ? (
+            files.map(file => (
+              <li key={file._id}>
+                <a
+                  className="file__info"
+                  href={file.url}
+                  title="open file"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MdInsertDriveFile size={40} />
+                  <strong>{file.title}</strong>
+                </a>
 
-                  <span className="updated-at">
-                    { formatDistance(parseISO(file.updatedAt), new Date(), {
-                        addSuffix: true,
-                        includeSeconds: true
-                    })}
-                  </span>
-                </li>
-              )) 
-              : ( <h1>this folder is empty</h1> ) 
-          }
+                <span className="updated-at">
+                  {formatDistance(parseISO(file.updatedAt), new Date(), {
+                    addSuffix: true,
+                    includeSeconds: true
+                  })}
+                </span>
+              </li>
+            ))
+          ) : (
+            <h1>this folder is empty</h1>
+          )}
         </ul>
       </div>
-    )
+    );
   }
 }
 
-export default Folder
+export default Folder;

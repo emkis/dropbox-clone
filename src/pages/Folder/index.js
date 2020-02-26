@@ -96,7 +96,7 @@ class Folder extends Component {
       <div className="folder__container">
         <header>
           <h1>{title}</h1>
-          <div
+          <div>
             <button
               type="button"
               className="btn btn-icon"

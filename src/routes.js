@@ -1,20 +1,16 @@
-import React from 'react'
-import { BrowserRouter, Route, Switch } from "react-router-dom"
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Main from './pages/Main'
-import Folder from './pages/Folder'
-import Folders from './pages/Folders'
+import Folder from "./pages/Folder";
+import Folders from "./pages/Folders";
 
-const Routes = () => (    
+const Routes = () => (
   <BrowserRouter>
     <Switch>
-
-      <Route path="/" exact component={ Main } />
-      <Route path="/folder/:id" component={ Folder } />
-      <Route path="/folders" component={ Folders } />
-   
+      <Route path="/" exact component={Folders} />
+      <Route path="/folder/:id" component={Folder} />
     </Switch>
   </BrowserRouter>
-)
+);
 
-export default Routes
+export default Routes;

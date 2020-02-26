@@ -96,19 +96,21 @@ class Folder extends Component {
       <div className="folder__container">
         <header>
           <h1>{title}</h1>
-          <button
-            type="button"
-            className="btn btn-icon"
-            title="delete this folder"
-            onClick={this.handleDeleteFolder}
-            disabled={deletingFolder}
-          >
-            {deletingFolder ? (
-              <FaCircleNotch className="rotate" size={33} />
-            ) : (
-              <FiTrash2 size={35} />
-            )}
-          </button>
+          <div
+            <button
+              type="button"
+              className="btn btn-icon"
+              title="delete this folder"
+              onClick={this.handleDeleteFolder}
+              disabled={deletingFolder}
+            >
+              {deletingFolder ? (
+                <FaCircleNotch className="rotate" size={33} />
+              ) : (
+                <FiTrash2 size={35} />
+              )}
+            </button>
+          </div>
         </header>
 
         <Dropzone onDropAccepted={this.handleUpload}>

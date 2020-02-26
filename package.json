@@ -1,7 +1,10 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
+  "name": "dropbox-clone",
+  "main": "index.js",
+  "repository": "https://github.com/emkis/dropbox-clone.git",
+  "author": "emkis <nicolasemkis@gmail.com>",
+  "license": "MIT",
+  "version": "1.1.0",
   "dependencies": {
     "axios": "^0.19.2",
     "date-fns": "^2.9.0",

@@ -17,7 +17,7 @@ body {
 *::before {
   margin: 0;
   padding: 0;
-  line-height: 1.2;
+  line-height: 1.58;
   outline: none;
   box-sizing: border-box;
 }
@@ -281,8 +281,6 @@ header .btn + .btn {
 .folders svg {
   color: #333;
 }
-
-/*  */
 
 .main__box,
 .message__container {

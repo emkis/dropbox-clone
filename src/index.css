@@ -26,6 +26,10 @@ a {
   text-decoration: none;
 }
 
+svg {
+  stroke: #333333;
+}
+
 button {
   transition: transform ease 100ms;
   line-height: normal;

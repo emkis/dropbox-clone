@@ -165,6 +165,7 @@ class Folders extends Component {
               className="btn btn-icon"
               title="download all files"
               onClick={this.handleDownload}
+              disabled={downloadingFiles}
             >
               {downloadingFiles ? (
                 <FaCircleNotch size={33} className="rotate" />

@@ -20,7 +20,7 @@ class Folder extends Component {
     this.subscribeToNewFiles();
 
     const folderId = this.props.match.params.id;
-    const response = await api.get(`/folder/${folderId}`);
+    const response = await api.get(`folder/${folderId}`);
 
     this.setState({
       folder: response.data,
@@ -69,11 +69,13 @@ class Folder extends Component {
     });
   };
 
-  handleDeleteFolder = async id => {
+  handleDeleteFolder = async () => {
     this.setState({ deletingFolder: true });
 
     try {
-      await api.delete(`folder/${id}`);
+      const folderId = this.props.match.params.id;
+      
+      await api.delete(`folder/${folderId}`);
       this.props.history.push("/");
     } catch (error) {
       this.setState({ deletingFolder: false });

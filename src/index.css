@@ -17,7 +17,7 @@ body {
 *::before {
   margin: 0;
   padding: 0;
-  line-height: 1.58;
+  line-height: 1.25;
   outline: none;
   box-sizing: border-box;
 }
@@ -28,6 +28,7 @@ a {
 
 button {
   transition: transform ease 100ms;
+  line-height: normal;
 }
 
 button[disabled],
@@ -48,7 +49,7 @@ button:focus {
 
 .btn-icon:hover,
 .btn-icon:focus {
-  background-color: #ddd;
+  background-color: rgba(95, 99, 104, 0.1);
 }
 
 .overlay {
@@ -63,35 +64,6 @@ button:focus {
   justify-content: center;
   align-items: center;
   z-index: 10;
-}
-
-.message__container {
-  border: none;
-  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.7);
-}
-
-.message__container .title {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 2.5rem;
-}
-
-.message__container .message {
-  font-size: 2rem;
-  line-height: 1.45;
-  margin-bottom: 3rem;
-  color: #333;
-}
-
-.message__container button {
-  border: 0;
-  padding: 1.5rem 2.5rem;
-  font-size: 1.8rem;
-  font-weight: 700;
-  background: #000;
-  border-radius: 8px;
-  color: #fff;
-  cursor: pointer;
 }
 
 .loading {
@@ -268,10 +240,6 @@ header .btn + .btn {
   height: 100%;
 }
 
-.wrapper-_link:hover .folder__container li:hover {
-  background: rgba(95, 99, 104, 0.1);
-}
-
 .folders li .file__info {
   order: 2;
   text-align: center;
@@ -323,11 +291,4 @@ header .btn + .btn {
   color: #fff;
   cursor: pointer;
   height: 5rem;
-}
-
-.main__box .gray,
-.message__container .gray {
-  color: black;
-  background: #ddd;
-  margin-bottom: 1rem;
 }

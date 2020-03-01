@@ -35,6 +35,7 @@ class Folders extends Component {
 
     if (this.state.iWantAFolder) {
       document.addEventListener("mousedown", this.handleClickOutside)
+      window.addEventListener('scroll', this.noScroll);
     }
   }
 
@@ -52,7 +53,10 @@ class Folders extends Component {
       creatingFolder: false
     })
     document.removeEventListener("mousedown", this.handleClickOutside)
+    window.removeEventListener('scroll', this.noScroll);
   }
+
+  noScroll = (x = 0, y = 0) => window.scrollTo(x, y)
 
   subscribeToNewFolders = () => {
     const io = socket(process.env.REACT_APP_API_URL)

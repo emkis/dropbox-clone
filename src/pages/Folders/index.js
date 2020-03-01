@@ -1,12 +1,12 @@
-import React, { Component, createRef } from "react";
-import { MdFolder } from "react-icons/md";
-import { FiDownload, FiFolderPlus } from "react-icons/fi";
-import { FaCircleNotch } from "react-icons/fa";
+import React, { Component, createRef } from "react"
+import { MdFolder } from "react-icons/md"
+import { FiDownload, FiFolderPlus } from "react-icons/fi"
+import { FaCircleNotch } from "react-icons/fa"
 
-import socket from "socket.io-client";
-import { Link } from "react-router-dom";
+import socket from "socket.io-client"
+import { Link } from "react-router-dom"
 
-import api from "../../services/api";
+import api from "../../services/api"
 
 class Folders extends Component {
   state = {
@@ -16,96 +16,106 @@ class Folders extends Component {
     creatingFolder: false,
     iWantAFolder: false,
     newFolderName: ""
-  };
+  }
 
   async componentDidMount() {
-    this.subscribeToNewFolders();
+    this.subscribeToNewFolders()
 
-    const response = await api.get(`/folders`);
-    const data = await response.data;
+    const response = await api.get(`/folders`)
+    const data = await response.data
 
     this.setState({
       folders: data,
       loading: false
-    });
+    })
   }
 
   componentDidUpdate() {
-    this.textInput.current && this.focusTextInput();
+    this.textInput.current && this.focusTextInput()
 
     if (this.state.iWantAFolder) {
-      document.addEventListener("mousedown", this.handleClickOutside);
+      document.addEventListener("mousedown", this.handleClickOutside)
     }
   }
 
-  textInput = createRef();
-  focusTextInput = () => this.textInput.current.focus();
+  textInput = createRef()
+  focusTextInput = () => this.textInput.current.focus()
 
-  containerRef = createRef();
+  containerRef = createRef()
 
   handleClickOutside = event => {
-    if (this.containerRef.current.contains(event.target)) return;
+    if (this.containerRef.current.contains(event.target)) return
 
     this.setState({
       iWantAFolder: false,
       newFolderName: "",
       creatingFolder: false
-    });
-    document.removeEventListener("mousedown", this.handleClickOutside);
-  };
+    })
+    document.removeEventListener("mousedown", this.handleClickOutside)
+  }
 
   subscribeToNewFolders = () => {
-    const io = socket(process.env.REACT_APP_API_URL);
+    const io = socket(process.env.REACT_APP_API_URL)
 
     io.on("folder", data => {
       this.setState({
         folders: [...this.state.folders, data]
-      });
-    });
-  };
+      })
+    })
+
+    io.on('removed_folder', removedFolder => {
+      this.setState({
+        folders: [
+          ...this.state.folders.filter(folder => 
+          folder._id !== removedFolder._id && folder
+        )]
+      })
+    })
+  }
 
   handleDownload = async () => {
-    this.setState({ downloadingFiles: true });
+    this.setState({ downloadingFiles: true })
 
     try {
       const response = await api.get("/download", {
         responseType: "blob",
         timeout: 30000
-      });
+      })
 
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "AllFiles.zip");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement("a")
+      link.href = url
+      link.setAttribute("download", "AllFiles.zip")
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
     } catch (error) {}
 
-    this.setState({ downloadingFiles: false });
-  };
+    this.setState({ downloadingFiles: false })
+  }
 
   handleNewFolder = () => {
     this.setState({
       iWantAFolder: true
-    });
-  };
+    })
+  }
 
   createNewFolder = async () => {
-    if (!this.state.newFolderName.trim()) return;
+    if (!this.state.newFolderName.trim()) return
 
-    this.setState({ creatingFolder: true });
+    this.setState({ creatingFolder: true })
 
     try {
       await api.post("folder", {
         title: this.state.newFolderName
-      });
+      })
 
-      this.setState({ iWantAFolder: false, newFolderName: "" });
+      this.setState({ iWantAFolder: false, creatingFolder: false, newFolderName: "" })
+      document.removeEventListener("mousedown", this.handleClickOutside)
     } catch (error) {
-      this.setState({ creatingFolder: false });
+      this.setState({ creatingFolder: false })
     }
-  };
+  }
 
   render() {
     const {
@@ -114,14 +124,14 @@ class Folders extends Component {
       iWantAFolder,
       creatingFolder,
       downloadingFiles
-    } = this.state;
+    } = this.state
 
     if (loading) {
       return (
         <div className="loading">
           <FaCircleNotch />
         </div>
-      );
+      )
     }
 
     return (
@@ -194,8 +204,8 @@ class Folders extends Component {
           )}
         </ul>
       </div>
-    );
+    )
   }
 }
 
-export default Folders;
+export default Folders

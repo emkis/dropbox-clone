@@ -41,7 +41,7 @@ class Folder extends Component {
 
     io.emit("connectionRoom", folderId)
 
-    io.on("file", data => {
+    io.on("@file/CREATED", data => {
       this.setState({
         folder: {
           ...this.state.folder,
@@ -50,7 +50,7 @@ class Folder extends Component {
       })
     })
 
-    io.on("fileChanged", data => {
+    io.on("@file/CHANGED", data => {
       const modifiedFile = this.state.folder.files.map(file => {
         if (file.id === data.id) {
           file.url = data.url

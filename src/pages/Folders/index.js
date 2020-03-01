@@ -57,13 +57,13 @@ class Folders extends Component {
   subscribeToNewFolders = () => {
     const io = socket(process.env.REACT_APP_API_URL)
 
-    io.on("folder", data => {
+    io.on("@folder/CREATED", data => {
       this.setState({
         folders: [...this.state.folders, data]
       })
     })
 
-    io.on('removed_folder', removedFolder => {
+    io.on('@folder/REMOVED', removedFolder => {
       this.setState({
         folders: [
           ...this.state.folders.filter(folder => 
@@ -85,7 +85,7 @@ class Folders extends Component {
       const url = window.URL.createObjectURL(new Blob([response.data]))
       const link = document.createElement("a")
       link.href = url
-      link.setAttribute("download", "AllFiles.zip")
+      link.setAttribute("download", "all_files.zip")
       document.body.appendChild(link)
       link.click()
       link.remove()

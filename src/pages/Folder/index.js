@@ -1,38 +1,45 @@
-import React, { Component } from "react";
-import { formatDistance, parseISO } from "date-fns";
-import Dropzone from "react-dropzone";
-import socket from "socket.io-client";
+import React, { Component } from "react"
+import { formatDistance, parseISO } from "date-fns"
+import Dropzone from "react-dropzone"
+import socket from "socket.io-client"
 
-import { MdInsertDriveFile } from "react-icons/md";
-import { FiTrash2 } from "react-icons/fi";
-import { FaCircleNotch } from "react-icons/fa";
+import { MdInsertDriveFile } from "react-icons/md"
+import { FiTrash2 } from "react-icons/fi"
+import { FaCircleNotch } from "react-icons/fa"
 
-import api from "../../services/api";
+import api from "../../services/api"
 
 class Folder extends Component {
   state = {
     folder: {},
     loading: true,
     deletingFolder: false
-  };
+  }
 
   async componentDidMount() {
-    this.subscribeToNewFiles();
+    this.subscribeToNewFiles()
 
-    const folderId = this.props.match.params.id;
-    const response = await api.get(`folder/${folderId}`);
+    const folderId = this.props.match.params.id
+    
+    try {
+      const response = await api.get(`folder/${folderId}`)
 
-    this.setState({
-      folder: response.data,
-      loading: false
-    });
+      if(!response.data) throw Error()
+      
+      this.setState({
+        folder: response.data,
+        loading: false
+      })
+    } catch (error) {
+      this.props.history.push('/')
+    }
   }
 
   subscribeToNewFiles = () => {
-    const folderId = this.props.match.params.id;
-    const io = socket(process.env.REACT_APP_API_URL);
+    const folderId = this.props.match.params.id
+    const io = socket(process.env.REACT_APP_API_URL)
 
-    io.emit("connectionRoom", folderId);
+    io.emit("connectionRoom", folderId)
 
     io.on("file", data => {
       this.setState({
@@ -40,58 +47,58 @@ class Folder extends Component {
           ...this.state.folder,
           files: [data, ...this.state.folder.files]
         }
-      });
-    });
+      })
+    })
 
     io.on("fileChanged", data => {
       const modifiedFile = this.state.folder.files.map(file => {
         if (file.id === data.id) {
-          file.url = data.url;
-          file.updatedAt = data.updatedAt;
-          return file;
+          file.url = data.url
+          file.updatedAt = data.updatedAt
+          return file
         }
-        return file;
-      });
+        return file
+      })
 
       this.setState({
         folder: { ...this.state.folder, files: [...modifiedFile] }
-      });
-    });
-  };
+      })
+    })
+  }
 
   handleUpload = files => {
     files.forEach(file => {
-      const data = new FormData();
-      const folderId = this.props.match.params.id;
+      const data = new FormData()
+      const folderId = this.props.match.params.id
 
-      data.append("file", file);
-      api.post(`folder/${folderId}/files`, data);
-    });
-  };
+      data.append("file", file)
+      api.post(`folder/${folderId}/files`, data)
+    })
+  }
 
   handleDeleteFolder = async () => {
-    this.setState({ deletingFolder: true });
+    this.setState({ deletingFolder: true })
 
     try {
-      const folderId = this.props.match.params.id;
+      const folderId = this.props.match.params.id
       
-      await api.delete(`folder/${folderId}`);
-      this.props.history.push("/");
+      await api.delete(`folder/${folderId}`)
+      this.props.history.push("/")
     } catch (error) {
-      this.setState({ deletingFolder: false });
+      this.setState({ deletingFolder: false })
     }
-  };
+  }
 
   render() {
-    const { title, files } = this.state.folder;
-    const { loading, deletingFolder } = this.state;
+    const { title, files } = this.state.folder
+    const { loading, deletingFolder } = this.state
 
     if (loading) {
       return (
         <div className="loading">
           <FaCircleNotch />
         </div>
-      );
+      )
     }
 
     return (
@@ -152,8 +159,8 @@ class Folder extends Component {
           )}
         </ul>
       </div>
-    );
+    )
   }
 }
 
-export default Folder;
+export default Folder

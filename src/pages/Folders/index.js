@@ -104,7 +104,8 @@ class Folders extends Component {
     })
   }
 
-  createNewFolder = async () => {
+  createNewFolder = async e => {
+    e.preventDefault()
     if (!this.state.newFolderName.trim()) return
 
     this.setState({ creatingFolder: true })
@@ -142,7 +143,7 @@ class Folders extends Component {
       <div className="folder__container">
         {iWantAFolder && (
           <div className="overlay">
-            <div className="main__box" ref={this.containerRef}>
+            <form onSubmit={this.createNewFolder} className="main__box" ref={this.containerRef}>
               <h1>type the folder name</h1>
               <input
                 type="text"
@@ -151,9 +152,9 @@ class Folders extends Component {
                 onChange={e => this.setState({ newFolderName: e.target.value })}
               />
               <button
-                type="button"
-                onClick={this.createNewFolder}
+                type="submit"
                 disabled={creatingFolder}
+                required
               >
                 {creatingFolder ? (
                   <FaCircleNotch className="rotate" />
@@ -161,7 +162,7 @@ class Folders extends Component {
                   "create folder"
                 )}
               </button>
-            </div>
+            </form>
           </div>
         )}
 

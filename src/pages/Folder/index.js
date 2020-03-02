@@ -1,10 +1,10 @@
-import React, { Component } from "react"
+import React, { Component, createRef } from "react"
 import { formatDistance, parseISO } from "date-fns"
 import Dropzone from "react-dropzone"
 import socket from "socket.io-client"
 
 import { MdInsertDriveFile } from "react-icons/md"
-import { FiTrash2 } from "react-icons/fi"
+import { FiTrash2, FiAlertCircle } from "react-icons/fi"
 import { FaCircleNotch } from "react-icons/fa"
 
 import api from "../../services/api"
@@ -13,8 +13,11 @@ class Folder extends Component {
   state = {
     folder: {},
     loading: true,
+    deleteClickCounter: 0,
     deletingFolder: false
   }
+
+  buttonRef = createRef()
 
   async componentDidMount() {
     this.subscribeToNewFiles()
@@ -33,6 +36,19 @@ class Folder extends Component {
     } catch (error) {
       this.props.history.push('/')
     }
+  }
+
+  componentDidUpdate() {
+    if (this.state.deleteClickCounter > 0) {
+      document.addEventListener("mousedown", this.handleClickOutside)
+    }
+  }
+
+  handleClickOutside = event => {
+    if (this.buttonRef.current.contains(event.target)) return
+
+    this.setState({ deleteClickCounter: 0 })
+    document.removeEventListener("mousedown", this.handleClickOutside)
   }
 
   subscribeToNewFiles = () => {
@@ -77,21 +93,28 @@ class Folder extends Component {
   }
 
   handleDeleteFolder = async () => {
-    this.setState({ deletingFolder: true })
+    this.setState({ 
+      deleteClickCounter: this.state.deleteClickCounter += 1
+    })
 
-    try {
-      const folderId = this.props.match.params.id
-      
-      await api.delete(`folder/${folderId}`)
-      this.props.history.push("/")
-    } catch (error) {
-      this.setState({ deletingFolder: false })
+    if (this.state.deleteClickCounter > 1) {
+      document.removeEventListener("mousedown", this.handleClickOutside)
+      this.setState({ deletingFolder: true, deleteClickCounter: 0 })
+
+      try {
+        const folderId = this.props.match.params.id
+        
+        await api.delete(`folder/${folderId}`)
+        this.props.history.push("/")
+      } catch (error) {
+        this.setState({ deletingFolder: false })
+      }
     }
   }
 
   render() {
     const { title, files } = this.state.folder
-    const { loading, deletingFolder } = this.state
+    const { loading, deletingFolder, deleteClickCounter } = this.state
 
     if (loading) {
       return (
@@ -111,13 +134,12 @@ class Folder extends Component {
               className="btn btn-icon"
               title="delete this folder"
               onClick={this.handleDeleteFolder}
+              ref={this.buttonRef}
               disabled={deletingFolder}
             >
-              {deletingFolder ? (
-                <FaCircleNotch className="rotate" size={33} />
-              ) : (
-                <FiTrash2 size={35} />
-              )}
+              { deleteClickCounter === 0 && !deletingFolder && <FiTrash2 size={35} /> }
+              { deleteClickCounter === 1 && !deletingFolder && <FiAlertCircle size={35} /> }
+              { deletingFolder && <FaCircleNotch className="rotate" size={35} /> }
             </button>
           </div>
         </header>

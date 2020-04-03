@@ -40,7 +40,7 @@ to clone this repository and run this app, you'll need **[git](https://git-scm.c
 
 i highly recommend **[yarn](https://yarnpkg.com/)** for handling node packages faster, but you can use npm if you want, no problem.
 
-**from your command line:**
+**from your command line *(using npm)*:**
 
 ```bash
 # clone this repository
@@ -54,13 +54,13 @@ $ cd dropbox-clone
 $ cp .env.example .env
 
 # install dependencies
-$ yarn
+$ npm install
 
 # run the app in development mode
-$ yarn start
+$ npm run start
 
 # build the app for production
-$ yarn build
+$ npm run build
 ```
 
 # :memo: license

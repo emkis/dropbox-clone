@@ -6,6 +6,8 @@ this is a beautiful web app project that you can use for **store, share and aces
 
 i made this project for fun and also to challenge myself in learn more about reactjs
 
+**[you can see live app here](https://dropbox-clone.herokuapp.com)**
+
 # :pushpin: features
 
 ### realtime
@@ -58,15 +60,8 @@ $ npm install
 
 # run the app in development mode
 $ npm run start
-
-# build the app for production
-$ npm run build
 ```
 
-# :memo: license
-this project is under the **MIT license**, you can see the **[license](https://github.com/emkis/dropbox-clone/blob/master/LICENSE)** for more information.
-
 ---
-
 
 :v: **[say hello](https://www.linkedin.com/in/nicolas-jardim/)** to me on linkedin or send me and **[email](mailto:nicolasemkis@gmail.com)** :mailbox:

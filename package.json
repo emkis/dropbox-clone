@@ -7,10 +7,10 @@
   "version": "1.1.0",
   "dependencies": {
     "axios": "^0.20.0",
-    "date-fns": "^2.16.0",
+    "date-fns": "^2.16.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-dropzone": "^11.0.3",
+    "react-dropzone": "^11.1.0",
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",

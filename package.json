@@ -8,12 +8,12 @@
   "dependencies": {
     "axios": "^0.20.0",
     "date-fns": "^2.16.1",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-dropzone": "^11.2.0",
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "3.4.4",
     "socket.io-client": "^2.3.1"
   },
   "scripts": {

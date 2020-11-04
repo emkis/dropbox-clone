@@ -127,7 +127,7 @@ class Folder extends Component {
     return (
       <div className="folder__container">
         <header>
-          <h1>{title}</h1>
+          <h1 title="folder title">{title}</h1>
           <div>
             <button
               type="button"

@@ -167,7 +167,7 @@ class Folders extends Component {
         )}
 
         <header>
-          <h1>all folders below</h1>
+          <h1>current folders</h1>
           <div>
             <button
               className="btn btn-icon"

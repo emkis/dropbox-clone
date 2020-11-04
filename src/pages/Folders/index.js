@@ -192,7 +192,7 @@ class Folders extends Component {
         </header>
 
         <ul className="folders">
-          {folders ? (
+          {folders.length ? (
             folders.map(folder => (
               <li key={folder.title}>
                 <Link
@@ -205,7 +205,10 @@ class Folders extends Component {
               </li>
             ))
           ) : (
-            <h2>there's no folders here</h2>
+            <p className="folders__empty-message">
+              there's no folders here, you can create one 
+              <strong onClick={this.handleNewFolder}> clicking here.</strong>
+            </p>
           )}
         </ul>
       </div>

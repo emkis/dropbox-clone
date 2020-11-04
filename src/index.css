@@ -257,6 +257,14 @@ header .btn + .btn {
   color: #333;
 }
 
+.folders__empty-message {
+  margin-top: 20px;
+}
+
+.folders__empty-message > strong {
+  cursor: pointer;
+}
+
 .main__box,
 .message__container {
   max-width: 45rem;

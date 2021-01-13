@@ -1,6 +1,5 @@
 {
   "name": "dropbox-clone",
-  "main": "index.js",
   "repository": "https://github.com/emkis/dropbox-clone.git",
   "author": "emkis <nicolasemkis@gmail.com>",
   "license": "MIT",
@@ -14,7 +13,7 @@
     "react-icons": "^4.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
-    "socket.io-client": "^2.4.1"
+    "socket.io-client": "^2.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -29,7 +28,8 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "not ie > 0"
     ],
     "development": [
       "last 1 chrome version",
